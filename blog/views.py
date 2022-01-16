@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 from haystack.views import SearchView
 
@@ -23,6 +24,8 @@ class IndexView(View):
 class PageView(View):
     @staticmethod
     def get(request, page_number):
+        if page_number == 1:
+            return redirect(reverse('blog:index'))
         post_list = Post.objects.order_by('-create_time')
         paginator = Paginator(post_list, CONSTANT["page_size"])  # 得到分页器对象
         page = paginator.get_page(page_number)  # 得到当前页码对象
