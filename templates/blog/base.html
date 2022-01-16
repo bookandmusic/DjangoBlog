@@ -237,7 +237,7 @@
                         <div class="card-tag-cloud">
                             {% for tag in tag_list %}
                                 <a href="{% url 'blog:tag_post' pk=tag.pk page_number=1 %}"
-                                   style="font-size: 1.1em; color: #999">{{ tag.name }}</a>
+                                   style="font-size: {{ tag.font_size }}em; color:{{ tag.font_color }} ">{{ tag.name }}</a>
                             {% endfor %}
 
                         </div>

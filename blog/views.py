@@ -1,6 +1,8 @@
-import markdown
+import random
+
 from django.core.paginator import Paginator
 from django.db.models import Count, Max, Min
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, reverse
 from django.views import View
 from haystack.views import SearchView
@@ -8,7 +10,8 @@ from haystack.views import SearchView
 from DjangoBlog.settings import CONSTANT
 from blog.models import Post, Tag, Tutorial
 from blog.utils.page import get_page_range, get_year_posts, get_tutorial_posts
-from blog.utils.tag_cloud import TagCloud
+from blog.utils.parse_md import get_content, parse_content, get_file_list
+from blog.utils.tag_cloud import TagCloud, get_tags
 
 
 class IndexView(View):
@@ -35,9 +38,8 @@ class PostView(View):
         post = Post.objects.filter(pk=pk).first()
         post.views += 1
         post.save()
-
-        previous = Post.objects.filter(pk=pk - 1).first()
-        next = Post.objects.filter(pk=pk + 1).first()
+        previous = Post.objects.filter(pk__lt=pk).order_by("-id").first()
+        next = Post.objects.filter(pk__gt=pk).order_by("-id").first()
         return render(request, 'blog/post.html', {'post': post, 'previous': previous, 'next': next})
 
 
@@ -73,17 +75,7 @@ class ArchivesYearMonthView(View):
 class TagView(View):
     @staticmethod
     def get(request):
-        tags = Tag.objects.annotate(post_num=Count('post')).order_by('-post_num')
-        result = tags.aggregate(max=Max('post_num'), min=Min('post_num'))
-        tag_cloud = TagCloud(result['min'], result['min'])
-        data = []
-        for tag in tags:
-            data.append({
-                'pk': tag.pk,
-                'name': tag.name,
-                'font_size': tag_cloud.get_tag_font_size(tag.post_num),
-                'font_color': tag_cloud.get_tag_color(tag.post_num)
-            })
+        data = get_tags()
         return render(request, 'blog/tags.html', {'tag_list': data})
 
 
@@ -163,3 +155,19 @@ class KeyWordSearch(SearchView):
         context.update(self.extra_context())
 
         return context
+
+
+class AddPostView(View):
+    def get(self, request):
+        file_list = get_file_list('/Users/lsf/Documents/hexo/source/_posts')
+
+        for file in file_list:
+            content = get_content(file)
+            data = parse_content(content)
+            tags = data.pop('tags')
+            data.setdefault('views', random.randint(500, 600))
+            tag_list = [Tag.objects.get_or_create(name=tag.strip())[0].pk for tag in tags]
+            post = Post.objects.create(**data)
+            post.tag.add(*tag_list)
+
+        return HttpResponse("ok")

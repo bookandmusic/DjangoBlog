@@ -18,4 +18,5 @@ urlpatterns = [
     path('tutorial/<int:page_number>/', views.TutorialsView.as_view(), name='tutorials'),
     path('tutorial/<int:pk>/<int:page_number>/', views.TutorialPostView.as_view(), name='tutorial_post'),
     path('search/', views.KeyWordSearch(), name='haystack_search'),
+    path('add_post/', views.AddPostView.as_view(), name='add_post'),
 ]

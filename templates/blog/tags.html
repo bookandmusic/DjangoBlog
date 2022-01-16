@@ -8,11 +8,8 @@
         <div class="tag-cloud-list is-center">
             {% for tag in tag_list %}
                 <a href="{% url 'blog:tag_post' pk=tag.pk page_number=1 %}"
-                   style="font-size: {{ tag.font_size }}em; color:'{{ tag.font_color }}' ">{{ tag.name }}</a>
-
+                   style="font-size: {{ tag.font_size }}em; color:{{ tag.font_color }} ">{{ tag.name }}</a>
             {% endfor %}
-
-
         </div>
     </div>
 {% endblock %}

@@ -72,7 +72,7 @@ $RECYCLE.BIN/
 
 # User-specific stuff
 .idea/
-
+migrations/0*.py
 # CMake
 cmake-build-*/
 

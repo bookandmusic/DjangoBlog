@@ -2,6 +2,7 @@ from django.db.models import Count
 from django.db.models.functions import TruncMonth
 
 from blog.models import Post, Tag, Tutorial
+from blog.utils.tag_cloud import get_tags
 from siteinfo.models import BlogSiteInfo
 
 
@@ -19,7 +20,7 @@ def site_info_context(request):
 
     archive_list = Post.objects.annotate(month=TruncMonth('create_time')).values('month').annotate(
         total=Count('id')).values('month', 'total').order_by('-month')[:10]
-    tag_list = Tag.objects.all()
+    tag_list = get_tags()
 
     if site_info:
         context = {

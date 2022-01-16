@@ -38,7 +38,7 @@ class Post(models.Model):
             TocExtension(slugify=sfy),
         ]
     )
-    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    create_time = models.DateTimeField(verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     is_delete = models.BooleanField(default=False, verbose_name='是否删除')
     title = models.CharField(max_length=50, verbose_name='标题')
