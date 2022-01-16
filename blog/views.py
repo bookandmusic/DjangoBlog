@@ -1,17 +1,12 @@
-import random
-
 from django.core.paginator import Paginator
-from django.db.models import Count, Max, Min
-from django.http import HttpResponse
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render
 from django.views import View
 from haystack.views import SearchView
 
 from DjangoBlog.settings import CONSTANT
 from blog.models import Post, Tag, Tutorial
 from blog.utils.page import get_page_range, get_year_posts, get_tutorial_posts
-from blog.utils.parse_md import get_content, parse_content, get_file_list
-from blog.utils.tag_cloud import TagCloud, get_tags
+from blog.utils.tag_cloud import get_tags
 
 
 class IndexView(View):
@@ -34,7 +29,7 @@ class PageView(View):
 
         # 最后处理过的页码列表
         page_range = get_page_range(paginator, page)
-        return render(request, 'blog/index.html', context={'post_list': page, 'page_range': page_range})
+        return render(request, 'blog/page.html', context={'post_list': page, 'page_range': page_range})
 
 
 class PostView(View):
