@@ -1,0 +1,18 @@
+{% extends 'blog/base_header.html' %}
+{% block title_name %}
+    标签
+{% endblock %}
+{% block main %}
+    <div id="page">
+        <div class="tag-cloud-title is-center">标签 - <span class="tag-cloud-amount">{{ tags }}</span></div>
+        <div class="tag-cloud-list is-center">
+            {% for tag in tag_list %}
+                <a href="{% url 'blog:tag_post' pk=tag.pk page_number=1 %}"
+                   style="font-size: {{ tag.font_size }}em; color:'{{ tag.font_color }}' ">{{ tag.name }}</a>
+
+            {% endfor %}
+
+
+        </div>
+    </div>
+{% endblock %}

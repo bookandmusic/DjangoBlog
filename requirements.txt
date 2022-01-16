@@ -1,0 +1,17 @@
+Django==2.2
+django-haystack==3.1.1
+django-mdeditor==0.1.20
+django-simpleui==2022.1
+elasticsearch==5.5.3
+importlib-metadata==4.10.0
+jieba==0.42.1
+Markdown==3.3.6
+mistune==2.0.2
+Pygments==2.11.2
+pytz==2021.3
+six==1.16.0
+sqlparse==0.4.2
+typing_extensions==4.0.1
+urllib3==1.26.8
+Whoosh==2.7.4
+zipp==3.7.0

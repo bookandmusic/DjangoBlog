@@ -1,0 +1,68 @@
+{% extends 'blog/base_header.html' %}
+{% load highlight %}
+{% load markdown2html %}
+
+{% block main %}
+    <div class="recent-posts" id="recent-posts">
+
+        {% for post in page.object_list %}
+            <div class="recent-post-item">
+                <div class="recent-post-info no-cover">
+                    <a class="article-title" href="{% url 'blog:post' pk=post.object.pk %}"
+                       title="{{ post.object.title }}">{{ post.object.title }}</a>
+                    <div class="article-meta-wrap"><span class="post-meta-date"><i
+                            class="far fa-calendar-alt"></i><span
+                            class="article-meta-label">发表于</span><time
+                            title="发表于 {{ post.object.create_time }}">{{ post.object.create_time }}</time></span><span
+                            class="article-meta tags"><span class="article-meta__separator">|</span><i
+                            class="fas fa-tag"></i>
+                        {% for tag in post.object.tag.all %}
+                            <a class="article-meta__tags"
+                               href="{% url 'blog:tag_post' pk=tag.pk page_number=1 %}">{{ tag.name }}</a></span>
+                            {% if not forloop.last %}
+                                <span class="article-meta__link">•</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="content">{% highlight post.object.content with query %} ...
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="category-title is-center">
+                <h2>没有找到相关文章</h2>
+            </div>
+        {% endfor %}
+
+        <nav id="pagination">
+            <div class="pagination">
+                {% if page.has_previous %}
+                    <a class="extend prev" rel="prev"
+                       href="{% url 'blog:haystack_search' %}?q={{ query }}&amp;page={{ page.previous_page_number }}"><i
+                            class="fas fa-chevron-left fa-fw"></i></a>
+                {% endif %}
+
+                {% for index in page_range %}
+                    {% ifequal index page.number %}
+                        <a href="#" class="page-number current">{{ index }}</a>
+                    {% else %}
+                        <a href="{% url 'blog:haystack_search' %}?q={{ query }}&amp;page={{ index }}"
+                           class="page-number">{{ index }}</a>
+                    {% endifequal %}
+                {% endfor %}
+
+
+                {% if page.has_next %}
+                    <a class="extend next" rel="next"
+                       href="{% url 'blog:haystack_search' %}?q={{ query }}&amp;page={{ page.next_page_number }}"><i
+                            class="fas fa-chevron-right fa-fw"></i></a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+    <style>
+        span.highlighted {
+            color: red;
+        }
+    </style>
+{% endblock %}

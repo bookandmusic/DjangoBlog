@@ -1,0 +1,30 @@
+{% extends 'blog/archives.html' %}
+{% block total %}
+    {{ count }}
+{% endblock %}
+{% block pagination %}
+    <nav id="pagination">
+        <div class="pagination">
+            {% if post_list.has_previous %}
+                <a class="extend prev" rel="prev"
+                   href="{% url 'blog:archive_year_month'  page_number=post_list.previous_page_number year=year month=month %}"><i
+                        class="fas fa-chevron-left fa-fw"></i></a>
+            {% endif %}
+
+            {% for page in page_range %}
+                {% ifequal page post_list.number %}
+                    <a href="#" class="page-number current">{{ page }}</a>
+                {% else %}
+                    <a href="{% url 'blog:archive_year_month' page_number=page  year=year month=month %}"
+                       class="page-number">{{ page }}</a>
+                {% endifequal %}
+            {% endfor %}
+
+            {% if post_list.has_next %}
+                <a class="extend next" rel="next"
+                   href="{% url 'blog:archive_year_month' page_number=post_list.next_page_number  year=year month=month %}"><i
+                        class="fas fa-chevron-right fa-fw"></i></a>
+            {% endif %}
+        </div>
+    </nav>
+{% endblock %}

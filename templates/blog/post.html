@@ -1,0 +1,187 @@
+{% extends 'blog/base_header.html' %}
+
+{% block header %}
+    <header class="post-bg" id="page-header"
+            style="background-image: url('https://gitee.com/bookandmusic/imgs/raw/master/uPic/2022/01/A2.jpg')">
+        <nav id="nav" class="show"><span id="blog_name"><a id="site-name" href="/">{{ site_name }}</a></span>
+            <div id="menus">
+                <div id="search-button"><a class="site-page social-icon search">
+                    <i class="fas fa-search fa-fw"></i><span> 搜索</span></a>
+                </div>
+                <div class="menus_items">
+                    <div class="menus_item">
+                        <a class="site-page" href="{% url 'blog:index' %}">
+                            <i class="fa-fw fas fa-home"></i><span> 首页</span>
+                        </a>
+                    </div>
+                    <div class="menus_item">
+                        <a class="site-page" href="{% url 'blog:archive' page_number=1 %}"><i
+                                class="fa-fw fas fa-archive"></i><span> 归档</span></a>
+                    </div>
+                    <div class="menus_item">
+                        <a class="site-page" href="{% url 'blog:tags' %}">
+                            <i class="fa-fw fas fa-tags"></i>
+                            <span> 标签</span>
+                        </a>
+                    </div>
+                    <div class="menus_item">
+                        <a class="site-page" href="{% url 'blog:tutorials' page_number=1 %}">
+                            <i class="fa-fw fas fa-book"></i>
+                            <span> 教程</span>
+                        </a>
+                    </div>
+                </div>
+                <div id="toggle-menu">
+                    <a class="site-page">
+                        <i class="fas fa-bars fa-fw"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <div id="post-info"><h1 class="post-title">{{ post.title }}</h1>
+            <div id="post-meta">
+                <div class="meta-firstline"><span class="post-meta-date"><i
+                        class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time
+                        class="post-meta-date-created"
+                        title="发表于 {{ post.create_time }}">{{ post.create_time }}</time><span
+                        class="post-meta-separator">|</span><i
+                        class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time
+                        class="post-meta-date-updated"
+                        title="更新于 {{ post.update_time }}">{{ post.update_time }}</time></span></div>
+                <div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"
+                                                                                             id=""
+                                                                                             data-flag-title="{{ post.title }}"><i
+                        class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span
+                        id="busuanzi_value_page_pv">{{ post.views }}</span></span></div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+{% block main %}
+    <div id="post">
+        <article class="post-content" id="article-container">
+            {{ post.content_to_markdown | safe }}
+        </article>
+        <div class="post-copyright">
+            <div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span
+                    class="post-copyright-info"><a href="mailto:undefined">{{ author }}</a></span></div>
+            <div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span
+                    class="post-copyright-info">
+                <a href="{% url 'blog:post' pk=post.pk %}">{{ url }}{% url 'blog:post' pk=post.pk %}</a></span>
+            </div>
+            <div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span
+                    class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a
+                    href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a
+                    href="{{ url }}" target="_blank">{{ copyright }}</a>！</span></div>
+        </div>
+        <div class="tag_share">
+            <div class="post-meta__tag-list">
+                {% for tag in post.tag.all %}
+                    <a class="post-meta__tags"
+                       href="{% url 'blog:tag_post' pk=tag.pk page_number=1 %}">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+            <div class="post_share"></div>
+        </div>
+        <nav class="pagination-post" id="pagination">
+            {% if previous and not next %}
+                <div class="prev-post pull-full">
+                    <a href="{% url 'blog:post' pk=previous.pk %}">
+                        <img class="prev-cover"
+                             src="https://gitee.com/bookandmusic/imgs/raw/master/uPic/2022/01/A2.jpg"
+                             alt="cover of previous post">
+                        <div class="pagination-info">
+                            <div class="label">上一篇</div>
+                            <div class="prev_info">{{ previous.title }}</div>
+                        </div>
+                    </a></div>
+            {% elif next and not previous %}
+                <div class="next-post pull-full">
+                    <a href="{% url 'blog:post' pk=next.pk %}">
+                        <img class="next-cover"
+                             src="https://gitee.com/bookandmusic/imgs/raw/master/uPic/2022/01/A2.jpg"
+                             alt="cover of next post">
+                        <div class="pagination-info">
+                            <div class="label">下一篇</div>
+                            <div class="next_info">{{ next.title }}</div>
+                        </div>
+                    </a></div>
+            {% else %}
+                <div class="prev-post pull-left">
+                    <a href="{% url 'blog:post' pk=previous.pk %}">
+                        <img class="prev-cover"
+                             src="https://gitee.com/bookandmusic/imgs/raw/master/uPic/2022/01/A2.jpg"
+                             alt="cover of previous post">
+                        <div class="pagination-info">
+                            <div class="label">上一篇</div>
+                            <div class="prev_info">{{ previous.title }}</div>
+                        </div>
+                    </a></div>
+                <div class="next-post pull-right">
+                    <a href="{% url 'blog:post' pk=next.pk %}">
+                        <img class="next-cover" src="https://gitee.com/bookandmusic/imgs/raw/master/uPic/2022/01/A2.jpg"
+                             alt="cover of next post">
+                        <div class="pagination-info">
+                            <div class="label">下一篇</div>
+                            <div class="next_info">{{ next.title }}</div>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+        </nav>
+    </div>
+{% endblock %}
+{% block aside-content %}
+    <div class="aside-content" id="aside-content">
+        <div class="card-widget card-info">
+            <div class="is-center">
+                <div class="avatar-img"><img src="https://gitee.com/bookandmusic/imgs/raw/master/uPic/2020%2005/me.gif"
+                                             alt="avatar">
+                </div>
+                <div class="author-info__name">bookandmusic</div>
+                <div class="author-info__description"></div>
+            </div>
+            <div class="card-info-data">
+                <div class="card-info-data-item is-center"><a href="{% url 'blog:archive' page_number=1 %}">
+                    <div class="headline">文章</div>
+                    <div class="length-num">{{ posts }}</div>
+                </a></div>
+                <div class="card-info-data-item is-center">
+                    <a href="{% url 'blog:tags' %}">
+                        <div class="headline">标签</div>
+                        <div class="length-num">{{ tags }}</div>
+                    </a>
+                </div>
+                <div class="card-info-data-item is-center"><a href="{% url 'blog:tutorials' page_number=1 %}">
+                    <div class="headline">教程</div>
+                    <div class="length-num">{{ tutorials }}</div>
+                </a>
+                </div>
+            </div>
+        </div>
+        <div class="sticky_layout">
+            <div class="card-widget" id="card-toc">
+                <div class="item-headline">
+                    <i class="fas fa-stream"></i><span>目录</span>
+                </div>
+                {{ post.body_to_toc |safe }}
+            </div>
+            <div class="card-widget card-recent-post">
+                <div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div>
+                <div class="aside-list">
+                    {% for post in recent_posts %}
+                        <div class="aside-list-item no-cover">
+                            <div class="content"><a class="title" href="{% url 'blog:post' pk=post.pk %}"
+                                                    title="{{ post.title }}">{{ post.title }}</a>
+                                <time datetime="{{ post.create_time }}"
+                                      title="发表于 {{ post.create_time| date:'Y-m-d' }}">
+                                    {{ post.create_time| date:'Y-m-d' }}
+                                </time>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+
+
+{% block header %}
+    <header class="not-home-page" id="page-header"
+            style="background-image: url('https://gitee.com/bookandmusic/imgs/raw/master/uPic/2022/01/A1.jpg')">
+        <nav id="nav" class="show"><span id="blog_name"><a id="site-name" href="/">{{ site_name }}</a></span>
+            <div id="menus">
+                <div id="search-button"><a class="site-page social-icon search"><i
+                        class="fas fa-search fa-fw"></i><span> 搜索</span></a></div>
+                <div class="menus_items">
+                    <div class="menus_item"><a class="site-page" href="{% url 'blog:index' %}"><i
+                            class="fa-fw fas fa-home"></i><span> 首页</span></a></div>
+                    <div class="menus_item"><a class="site-page" href="{% url 'blog:archive' page_number=1 %} "><i
+                            class="fa-fw fas fa-archive"></i><span> 归档</span></a></div>
+                    <div class="menus_item"><a class="site-page" href="{% url 'blog:tags' %}"><i
+                            class="fa-fw fas fa-tags"></i><span> 标签</span></a>
+                    </div>
+                    <div class="menus_item"><a class="site-page" href="{% url 'blog:tutorials' page_number=1 %}"><i
+                            class="fa-fw fas fa-book"></i><span> 教程</span></a>
+                    </div>
+                </div>
+                <div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div>
+            </div>
+        </nav>
+        <div id="page-site-info"><h1 id="site-title">
+            {% block title_name %}
+
+            {% endblock %}
+        </h1></div>
+    </header>
+{% endblock %}

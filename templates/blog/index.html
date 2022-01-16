@@ -1,0 +1,144 @@
+{% extends 'blog/base_header.html' %}
+{% load markdown2html %}
+
+{% block header %}
+    <header class="full_page" id="page-header"
+            style="background-image: url('{{ background }}')">
+        <nav id="nav">
+            <span id="blog_name">
+                <a id="site-name" href="/">{{ site_name }}</a>
+            </span>
+            <div id="menus">
+                <div id="search-button"><a class="site-page social-icon search">
+                    <i class="fas fa-search fa-fw"></i><span> 搜索</span></a>
+                </div>
+                <div class="menus_items">
+                    <div class="menus_item">
+                        <a class="site-page" href="{% url 'blog:index' %}">
+                            <i class="fa-fw fas fa-home"></i><span> 首页</span>
+                        </a>
+                    </div>
+                    <div class="menus_item">
+                        <a class="site-page" href="{% url 'blog:archive' page_number=1 %}"><i
+                                class="fa-fw fas fa-archive"></i><span> 归档</span></a>
+                    </div>
+                    <div class="menus_item">
+                        <a class="site-page" href="{% url 'blog:tags' %}">
+                            <i class="fa-fw fas fa-tags"></i>
+                            <span> 标签</span>
+                        </a>
+                    </div>
+                    <div class="menus_item">
+                        <a class="site-page" href="{% url 'blog:tutorials' page_number=1 %}">
+                            <i class="fa-fw fas fa-book"></i>
+                            <span> 教程</span>
+                        </a>
+                    </div>
+                </div>
+                <div id="toggle-menu">
+                    <a class="site-page">
+                        <i class="fas fa-bars fa-fw"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <div id="site-info">
+            <h1 id="site-title">{{ blog_title }}</h1>
+            <div id="site-subtitle">
+                <span id="subtitle"></span>
+            </div>
+        </div>
+        <div id="scroll-down">
+            <i class="fas fa-angle-down scroll-down-effects"></i>
+        </div>
+    </header>
+{% endblock %}
+
+
+{% block main %}
+    <div class="recent-posts" id="recent-posts">
+        {% for post in post_list.object_list %}
+            <div class="recent-post-item">
+                <div class="recent-post-info no-cover">
+                    <a class="article-title" href="{% url 'blog:post' pk=post.pk %}"
+                       title="{{ post.title }}">{{ post.title }}</a>
+                    <div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span
+                            class="article-meta-label">发表于</span><time
+                            title="发表于 {{ post.create_time }}">{{ post.create_time }}</time></span><span
+                            class="article-meta tags"><span class="article-meta__separator">|</span><i
+                            class="fas fa-tag"></i>
+                        {% for tag in post.tag.all %}
+                            <a class="article-meta__tags"
+                               href="{% url 'blog:tag_post' pk=tag.pk page_number=1 %}">{{ tag.name }}</a></span>
+                            {% if not forloop.last %}
+                                <span class="article-meta__link">•</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="content">{{ post.content|slice:"70"| markdown2html |safe }} ...
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
+        <nav id="pagination">
+            <div class="pagination">
+                {% if post_list.has_previous %}
+                    <a class="extend prev" rel="prev"
+                       href="{% url 'blog:page' page_number=post_list.previous_page_number %}"><i
+                            class="fas fa-chevron-left fa-fw"></i></a>
+                {% endif %}
+
+                {% for page in page_range %}
+                    {% ifequal page post_list.number %}
+                        <a href="#" class="page-number current">{{ page }}</a>
+                    {% else %}
+                        <a href="{% url 'blog:page' page_number=page %}" class="page-number">{{ page }}</a>
+                    {% endifequal %}
+                {% endfor %}
+
+
+                {% if post_list.has_next %}
+                    <a class="extend next" rel="next"
+                       href="{% url 'blog:page' page_number=post_list.next_page_number %}"><i
+                            class="fas fa-chevron-right fa-fw"></i></a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+
+    <div class="js-pjax">
+        <script>
+            function subtitleType() {
+                fetch('https://api.btstu.cn/yan/api.php?charset=utf-8&encode=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (true) {
+                            var sub = "".length == 0 ? new Array() : "".split(',')
+                            var both = sub.unshift(data.text)
+                            typed = new Typed('#subtitle', {
+                                strings: sub,
+                                startDelay: 300,
+                                typeSpeed: 150,
+                                loop: true,
+                                backSpeed: 50,
+                            })
+                        } else {
+                            document.getElementById('subtitle').innerHTML = data.text
+                        }
+                    })
+            }
+
+            if (true) {
+                if (typeof Typed === 'function') {
+                    subtitleType()
+                } else {
+                    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+                }
+            } else {
+                subtitleType()
+            }
+        </script>
+    </div>
+{% endblock %}

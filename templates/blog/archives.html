@@ -1,0 +1,59 @@
+{% extends 'blog/base_header.html' %}
+{% block title_name %}
+    归档
+{% endblock %}
+
+{% block main %}
+    <div id="archive">
+        <div class="article-sort-title">文章总览 - {% block total %}
+            {{ posts }}
+        {% endblock %}</div>
+        <div class="article-sort">
+            {% for year, post_list in post_dict.items %}
+                <div class="article-sort-item year">{{ year }}</div>
+                {% for post in post_list %}
+                    <div class="article-sort-item no-article-cover">
+                        <div class="article-sort-item-info">
+                            <div class="article-sort-item-time"><i class="far fa-calendar-alt"></i>
+                                <time class="post-meta-date-created"
+                                      title="发表于 {{ post.create_time }}">{{ post.create_time }}
+                                </time>
+                            </div>
+                            <a class="article-sort-item-title" href="{% url 'blog:post' pk=post.pk %}"
+                               title="{{ post.title }}">{{ post.title }}</a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            {% endfor %}
+
+
+        </div>
+        {% block pagination %}
+            <nav id="pagination">
+                <div class="pagination">
+                    {% if post_list.has_previous %}
+                        <a class="extend prev" rel="prev"
+                           href="{% url 'blog:archive' page_number=post_list.previous_page_number %}"><i
+                                class="fas fa-chevron-left fa-fw"></i></a>
+                    {% endif %}
+
+                    {% for page in page_range %}
+                        {% ifequal page post_list.number %}
+                            <a href="#" class="page-number current">{{ page }}</a>
+                        {% else %}
+                            <a href="{% url 'blog:archive' page_number=page %}" class="page-number">{{ page }}</a>
+                        {% endifequal %}
+                    {% endfor %}
+
+                    {% if post_list.has_next %}
+                        <a class="extend next" rel="next"
+                           href="{% url 'blog:archive' page_number=post_list.next_page_number %}"><i
+                                class="fas fa-chevron-right fa-fw"></i></a>
+                    {% endif %}
+                </div>
+            </nav>
+        {% endblock %}
+
+    </div>
+{% endblock %}
