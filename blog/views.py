@@ -17,7 +17,12 @@ from blog.utils.tag_cloud import TagCloud, get_tags
 class IndexView(View):
     @staticmethod
     def get(request):
-        return redirect(reverse('blog:page', kwargs={"page_number": 1}))
+        post_list = Post.objects.order_by('-create_time')
+        paginator = Paginator(post_list, CONSTANT["page_size"])  # 得到分页器对象
+        page = paginator.get_page(1)  # 得到当前页码对象
+        # 最后处理过的页码列表
+        page_range = get_page_range(paginator, page)
+        return render(request, 'blog/index.html', context={'post_list': page, 'page_range': page_range})
 
 
 class PageView(View):
@@ -39,7 +44,7 @@ class PostView(View):
         post.views += 1
         post.save()
         previous = Post.objects.filter(pk__lt=pk).order_by("-id").first()
-        next = Post.objects.filter(pk__gt=pk).order_by("-id").first()
+        next = Post.objects.filter(pk__gt=pk).order_by("id").first()
         return render(request, 'blog/post.html', {'post': post, 'previous': previous, 'next': next})
 
 
@@ -155,7 +160,6 @@ class KeyWordSearch(SearchView):
         context.update(self.extra_context())
 
         return context
-
 
 # class AddPostView(View):
 #     def get(self, request):

@@ -15,13 +15,11 @@ class TagCloud(object):
     COLORS = ['#0F60B2', "#B20FB2", '#0FB20F', '#600FB2', '##3FBFBF', '#3FBFBF', '#7F3FBF', '#BF3F7F']
 
     def __init__(self, min_ref_count, max_ref_count):
-        print(min_ref_count, max_ref_count)
         self.min_ref_count = min_ref_count
         self.max_ref_count = max_ref_count
 
         # 如果最大标签和最小标签相等, 那么认为两者的步长为 0, 所有标签取同样的 font-size.
         if max_ref_count == min_ref_count:
-            print('11111111111')
             self.step = 0
         else:
             self.step = (self.MAX_FONT_SIZE - self.MIN_FONT_SIZE) / (max_ref_count - min_ref_count)

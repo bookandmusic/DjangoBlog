@@ -1,0 +1,66 @@
+{% extends 'blog/base_header.html' %}
+{% block title_name %}
+    {{ site_title }}
+{% endblock %}
+
+
+{% block main %}
+    <div class="recent-posts" id="recent-posts">
+        {% for post in post_list.object_list %}
+            <div class="recent-post-item">
+                <div class="recent-post-info no-cover">
+                    <a class="article-title" href="{% url 'blog:post' pk=post.pk %}"
+                       title="{{ post.title }}">{{ post.title }}</a>
+                    <div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span
+                            class="article-meta-label">发表于</span><time
+                            title="发表于 {{ post.create_time }}">{{ post.create_time }}</time></span><span
+                            class="article-meta tags"><span class="article-meta__separator">|</span><i
+                            class="fas fa-tag"></i>
+                        {% for tag in post.tag.all %}
+                            <a class="article-meta__tags"
+                               href="{% url 'blog:tag_post' pk=tag.pk page_number=1 %}">{{ tag.name }}</a></span>
+                            {% if not forloop.last %}
+                                <span class="article-meta__link">•</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="content">{{ post.content|slice:"70" }} ...
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
+        <nav id="pagination">
+            <div class="pagination">
+                {% if post_list.has_previous %}
+                    {% if post_list.number == 2 %}
+                        <a class="extend prev" rel="prev"
+                           href="{% url 'blog:index' %}"><i
+                                class="fas fa-chevron-left fa-fw"></i></a>
+                    {% else %}
+                        <a class="extend prev" rel="prev"
+                           href="{% url 'blog:page' page_number=post_list.previous_page_number %}"><i
+                                class="fas fa-chevron-left fa-fw"></i></a>
+                    {% endif %}
+
+                {% endif %}
+
+                {% for page in page_range %}
+                    {% ifequal page post_list.number %}
+                        <a href="#" class="page-number current">{{ page }}</a>
+                    {% else %}
+                        <a href="{% url 'blog:page' page_number=page %}" class="page-number">{{ page }}</a>
+                    {% endifequal %}
+                {% endfor %}
+
+
+                {% if post_list.has_next %}
+                    <a class="extend next" rel="next"
+                       href="{% url 'blog:page' page_number=post_list.next_page_number %}"><i
+                            class="fas fa-chevron-right fa-fw"></i></a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+{% endblock %}

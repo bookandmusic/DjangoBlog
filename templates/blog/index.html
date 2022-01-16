@@ -83,12 +83,6 @@
 
         <nav id="pagination">
             <div class="pagination">
-                {% if post_list.has_previous %}
-                    <a class="extend prev" rel="prev"
-                       href="{% url 'blog:page' page_number=post_list.previous_page_number %}"><i
-                            class="fas fa-chevron-left fa-fw"></i></a>
-                {% endif %}
-
                 {% for page in page_range %}
                     {% ifequal page post_list.number %}
                         <a href="#" class="page-number current">{{ page }}</a>
