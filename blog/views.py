@@ -157,17 +157,17 @@ class KeyWordSearch(SearchView):
         return context
 
 
-class AddPostView(View):
-    def get(self, request):
-        file_list = get_file_list('/Users/lsf/Documents/hexo/source/_posts')
-
-        for file in file_list:
-            content = get_content(file)
-            data = parse_content(content)
-            tags = data.pop('tags')
-            data.setdefault('views', random.randint(500, 600))
-            tag_list = [Tag.objects.get_or_create(name=tag.strip())[0].pk for tag in tags]
-            post = Post.objects.create(**data)
-            post.tag.add(*tag_list)
-
-        return HttpResponse("ok")
+# class AddPostView(View):
+#     def get(self, request):
+#         file_list = get_file_list('/Users/lsf/Documents/hexo/source/_posts')
+#
+#         for file in file_list:
+#             content = get_content(file)
+#             data = parse_content(content)
+#             tags = data.pop('tags')
+#             data.setdefault('views', random.randint(500, 600))
+#             tag_list = [Tag.objects.get_or_create(name=tag.strip())[0].pk for tag in tags]
+#             post = Post.objects.create(**data)
+#             post.tag.add(*tag_list)
+#
+#         return HttpResponse("ok")
