@@ -165,7 +165,7 @@ class KeyWordSearch(SearchView):
 #
 #         for file in file_list:
 #             content = get_content(file)
-#             data = parse_content(content)
+#             data = parse_markdown_content(content)
 #             tags = data.pop('tags')
 #             data.setdefault('views', random.randint(500, 600))
 #             tag_list = [Tag.objects.get_or_create(name=tag.strip())[0].pk for tag in tags]

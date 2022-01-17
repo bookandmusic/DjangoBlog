@@ -4,7 +4,7 @@ from mistune.directives import DirectiveToc
 from django.db import models
 from mdeditor.fields import MDTextField
 
-from blog.utils.parse_md import get_toc_list, toc_list2html, HighlightRenderer
+from blog.utils.parse_md import get_toc_list, toc_list2html, HighlightRenderer, get_abstract
 
 
 class Tag(models.Model):
@@ -50,10 +50,13 @@ class Post(models.Model):
     def content_to_markdown(self):
         return self.markdown(self.content)
 
-    def body_to_toc(self):
+    def content_to_toc(self):
         toc_list = get_toc_list(self.content)
         toc = toc_list2html(toc_list)
         return toc
+
+    def content_to_abstract(self):
+        return get_abstract(self.content)
 
     class Meta:
         db_table = 'tb_post'
