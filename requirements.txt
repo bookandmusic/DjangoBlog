@@ -1,11 +1,14 @@
+asgiref==3.4.1
 Django==2.2
 django-haystack==3.1.1
 django-mdeditor==0.1.20
 django-simpleui==2022.1
 importlib-metadata==4.10.0
 jieba==0.42.1
-Markdown==3.3.6
+mistune==2.0.2
+mysqlclient==2.1.0
 Pygments==2.11.2
+PyMySQL==1.0.2
 pytz==2021.3
 six==1.16.0
 sqlparse==0.4.2

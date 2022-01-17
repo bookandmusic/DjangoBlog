@@ -1,5 +1,13 @@
 {% extends 'blog/base_header.html' %}
-
+{% block config %}
+    <script id="config-diff">
+        var GLOBAL_CONFIG_SITE = {
+            isPost: true,
+            isHome: false,
+            isToc: true,
+        }
+    </script>
+{% endblock %}
 {% block header %}
     <header class="post-bg" id="page-header"
             style="background-image: url('https://gitee.com/bookandmusic/imgs/raw/master/uPic/2022/01/A2.jpg')">
@@ -164,7 +172,10 @@
                 <div class="item-headline">
                     <i class="fas fa-stream"></i><span>目录</span>
                 </div>
-                {{ post.body_to_toc |safe }}
+                <div class="toc-content">
+                    {{ post.body_to_toc |safe }}
+                </div>
+
             </div>
             <div class="card-widget card-recent-post">
                 <div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div>

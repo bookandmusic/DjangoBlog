@@ -1,8 +1,10 @@
-from markdown.extensions.toc import TocExtension
-from django.utils.text import slugify as sfy
-import markdown
+import mistune
+from mistune.directives import DirectiveToc
+
 from django.db import models
 from mdeditor.fields import MDTextField
+
+from blog.utils.parse_md import get_toc_list, toc_list2html, HighlightRenderer
 
 
 class Tag(models.Model):
@@ -30,14 +32,11 @@ class Tutorial(models.Model):
 
 
 class Post(models.Model):
-    md = markdown.Markdown(
-        extensions=[
-            'markdown.extensions.extra',
-            'markdown.extensions.codehilite',
-            # 'markdown.extensions.toc',
-            TocExtension(slugify=sfy),
-        ]
+    markdown = mistune.create_markdown(
+        renderer=HighlightRenderer(),
+        plugins=['table', DirectiveToc()]
     )
+
     create_time = models.DateTimeField(verbose_name='创建时间')
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     is_delete = models.BooleanField(default=False, verbose_name='是否删除')
@@ -49,11 +48,12 @@ class Post(models.Model):
     tag = models.ManyToManyField(to=Tag, verbose_name='标签')
 
     def content_to_markdown(self):
-        return self.md.convert(self.content)
+        return self.markdown(self.content)
 
     def body_to_toc(self):
-        self.md.convert(self.content)
-        return self.md.toc
+        toc_list = get_toc_list(self.content)
+        toc = toc_list2html(toc_list)
+        return toc
 
     class Meta:
         db_table = 'tb_post'
