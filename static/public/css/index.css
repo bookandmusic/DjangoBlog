@@ -6436,12 +6436,12 @@ blockquote.pullquote.right {
 #local-search .search-dialog .local-search-box {
     margin: 0 auto;
     max-width: 100%;
-    width: 70%;
+    width: 100%;
 }
 
 #local-search .search-dialog .local-search-box input {
     padding: 0.25rem 0.7rem;
-    width: 70%;
+    width: 100%;
     outline: none;
     border: 2px solid #49b1f5;
     border-radius: 2rem;

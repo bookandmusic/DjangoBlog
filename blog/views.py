@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
@@ -7,6 +8,7 @@ from haystack.views import SearchView
 from DjangoBlog.settings import CONSTANT
 from blog.models import Post, Tag, Tutorial
 from blog.utils.page import get_page_range, get_year_posts, get_tutorial_posts
+from blog.utils.parse_md import HexoBlogToSQL
 from blog.utils.tag_cloud import get_tags
 
 
@@ -41,8 +43,8 @@ class PostView(View):
         post = Post.objects.filter(pk=pk).first()
         post.views += 1
         post.save()
-        previous = Post.objects.filter(pk__lt=pk).order_by("-id").first()
-        next = Post.objects.filter(pk__gt=pk).order_by("id").first()
+        next = Post.objects.filter(create_time__gt=post.create_time).order_by("create_time").first()
+        previous = Post.objects.filter(create_time__lt=post.create_time).order_by("-create_time").first()
         return render(request, 'blog/post.html', {'post': post, 'previous': previous, 'next': next})
 
 
@@ -158,18 +160,3 @@ class KeyWordSearch(SearchView):
         context.update(self.extra_context())
 
         return context
-
-# class AddPostView(View):
-#     def get(self, request):
-#         file_list = get_file_list('/Users/lsf/Documents/hexo/source/_posts')
-#
-#         for file in file_list:
-#             content = get_content(file)
-#             data = parse_markdown_content(content)
-#             tags = data.pop('tags')
-#             data.setdefault('views', random.randint(500, 600))
-#             tag_list = [Tag.objects.get_or_create(name=tag.strip())[0].pk for tag in tags]
-#             post = Post.objects.create(**data)
-#             post.tag.add(*tag_list)
-#
-#         return HttpResponse("ok")
