@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '^!ltx0q5q!(!)w%y1e!5lsyyvf&+=$e4-!00^7j9wu71#9w@hu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', '*']
 
@@ -132,14 +132,14 @@ MEDIA_URL = '/media/'  # 你上传的文件和图片会默认存在/uploads/edit
 STATIC_URL = '/static/'
 # 当运行 python manage.py collectstatic 的时候
 # STATIC_ROOT 文件夹 是用来将所有STATICFILES_DIRS中所有文件夹中的文件，以及各app中static中的文件都复制过来
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATIC_ROOT = ''
 
 # 其它 存放静态文件的文件夹，可以用来存放项目中公用的静态文件，里面不能包含 STATIC_ROOT
 # 如果不想用 STATICFILES_DIRS 可以不用，都放在 app 里的 static 中也可以
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
 
 CONSTANT = {
     'page_size': 10
