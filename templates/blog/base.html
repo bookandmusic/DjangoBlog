@@ -304,7 +304,7 @@
         <div id="footer-wrap">
             <div class="copyright">&copy;2019 - 2022 By {{ copyright }}</div>
             <div class="framework-info">
-                <span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+                <span>框架 </span><a target="_blank" rel="noopener" href="https://www.djangoproject.com/">Django</a>
                 <span class="footer-separator">|</span><span>主题 </span>
                 <a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a>
             </div>
@@ -321,7 +321,9 @@
     </div>
     <div id="rightside-config-show">
         <button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button>
-        <button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button>
+        {% block toc_button %}
+
+        {% endblock %}
         <button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button>
     </div>
 </div>

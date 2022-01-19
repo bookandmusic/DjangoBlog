@@ -65,7 +65,7 @@ class MarkdownParse(object):
                     i += 1
                     level = len(tmp.group(1))
                     title = tmp.group(2)
-                    title = re.sub(r'`', '', title)
+                    title = re.sub(r'[^\w\-_]', '', title)
                     if level == 1:
                         temp = copy.copy(heading)
                         parentId = None

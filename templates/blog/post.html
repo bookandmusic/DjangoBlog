@@ -114,7 +114,7 @@
                             <div class="next_info">{{ next.title }}</div>
                         </div>
                     </a></div>
-            {% else %}
+            {% elif next and previous %}
                 <div class="prev-post pull-left">
                     <a href="{% url 'blog:post' pk=previous.pk %}">
                         <img class="prev-cover"
@@ -208,6 +208,12 @@
 	});
 	MathJax.Hub.Queue(["Typeset", MathJax.Hub, articlemathId, commentmathId]); //指定渲染的html块，可以为多个
 
+
+
+
     </script>
     <script src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+{% endblock %}
+{% block toc_button %}
+    <button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button>
 {% endblock %}
