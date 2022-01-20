@@ -1,6 +1,6 @@
 # DjangoBlog
 
-🌍 *English ∙ 简体中文*
+🌍 *简体中文*
 
 基于`python3.7`和`Django2.2`的博客。
 
