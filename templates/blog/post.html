@@ -10,7 +10,7 @@
 {% endblock %}
 {% block header %}
     <header class="post-bg" id="page-header"
-            style="background-image: url('https://gitee.com/bookandmusic/imgs/raw/master/uPic/2022/01/A2.jpg')">
+            style="background-image: url('{{ background }}')">
         <nav id="nav" class="show"><span id="blog_name"><a id="site-name" href="/">{{ site_name }}</a></span>
             <div id="menus">
                 <div id="search-button"><a class="site-page social-icon search">
@@ -143,7 +143,7 @@
     <div class="aside-content" id="aside-content">
         <div class="card-widget card-info">
             <div class="is-center">
-                <div class="avatar-img"><img src="https://gitee.com/bookandmusic/imgs/raw/master/uPic/2020%2005/me.gif"
+                <div class="avatar-img"><img src=" {{ image }}"
                                              alt="avatar">
                 </div>
                 <div class="author-info__name">bookandmusic</div>
